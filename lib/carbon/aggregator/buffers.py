@@ -61,10 +61,11 @@ class MetricBuffer:
 
     for buffer in self.interval_buffers.values():
       if buffer.active:
-        value = self.aggregation_func(buffer.values)
-        datapoint = (buffer.interval, value)
-        state.events.metricGenerated(self.metric_path, datapoint)
-        state.instrumentation.increment('aggregateDatapointsSent')
+        value_pairs = self.aggregation_func(buffer.values)
+        for value, postfix in value_pairs:
+            datapoint = (buffer.interval, value)
+            state.events.metricGenerated(self.metric_path + postfix, datapoint)
+            state.instrumentation.increment('aggregateDatapointsSent')
         buffer.mark_inactive()
 
       if buffer.interval < age_threshold:

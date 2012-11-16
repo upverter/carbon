@@ -1,3 +1,4 @@
+import math
 import time
 import re
 from os.path import exists, getmtime
@@ -133,12 +134,26 @@ class AggregationRule:
 
 def avg(values):
   if values:
-    return float( sum(values) ) / len(values)
+    return [(float( sum(values) ) / len(values), '')]
+
+
+def sum_values(values):
+  if values:
+    return [(sum(values), '')]
+
+
+hist_percents = [99, 95, 90, 75, 50, 25]
+def histogram(values):
+  if values:
+    values.sort()
+    num_vals = len(values)
+    return [(values[int(math.floor(num_vals * percent / 100.0))], '.%s' % percent) for percent in hist_percents]
 
 
 AGGREGATION_METHODS = {
-  'sum' : sum,
+  'sum' : sum_values,
   'avg' : avg,
+  'hist' : histogram,
 }
 
 # Importable singleton
