@@ -142,6 +142,16 @@ def sum_values(values):
     return [(sum(values), '')]
 
 
+def min_values(values):
+  if values:
+    return [(min(values), '')]
+
+
+def max_values(values):
+  if values:
+    return [(max(values), '')]
+
+
 hist_percents = [99, 95, 90, 75, 50, 25]
 def histogram(values):
   if values:
@@ -154,6 +164,8 @@ AGGREGATION_METHODS = {
   'sum' : sum_values,
   'avg' : avg,
   'hist' : histogram,
+  'min' : min_values,
+  'max' : max_values,
 }
 
 # Importable singleton
